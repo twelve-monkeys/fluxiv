@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target":"es3",
+        "jsx": "preserve",
+        "module": "amd"
+    },
+    "exclude": [
+        "node_modules",
+        "spec"
+    ]
+}
