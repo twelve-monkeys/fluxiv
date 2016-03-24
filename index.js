@@ -54,11 +54,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(1), __webpack_require__(2), !(function webpackMissingModule() { var e = new Error("Cannot find module \"./Store\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, Action_1, Dispatcher_1, Store_1, StoreComponent_1) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(1), __webpack_require__(3), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, Dispatcher_1, Store_1, StoreComponent_1) {
+	    "use strict";
 	    function __export(m) {
 	        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	    }
-	    __export(Action_1);
 	    __export(Dispatcher_1);
 	    __export(Store_1);
 	    __export(StoreComponent_1);
@@ -69,15 +69,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BugLog_1) {
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, BugLog_1) {
+	    "use strict";
 	    var Dispatcher = (function () {
 	        function Dispatcher() {
 	            this._stores = [];
@@ -131,19 +124,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._callsWaiting.push({ store: store, callback: callback });
 	        };
 	        return Dispatcher;
-	    })();
+	    }());
+	    exports.Dispatcher = Dispatcher;
 	    exports.__esModule = true;
 	    exports["default"] = new Dispatcher();
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// This script allows you to:
 	//  * use 'bugLog(message)' to record log entries in case an error occurs,
 	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
 	    /////////////
 	    // Logging //
 	    /////////////
@@ -258,7 +253,94 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 4 */,
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(4), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, EventSource_1, BugLog_1) {
+	    "use strict";
+	    var Store = (function () {
+	        function Store() {
+	            this._onChanged = new EventSource_1["default"]();
+	        }
+	        Store.prototype.subscribe = function (callback) {
+	            return this._onChanged.add(callback);
+	        };
+	        Store.prototype.getClassName = function () {
+	            var result = ("" + this.constructor).split("function ")[1].split("(")[0];
+	            if (result[0] === "_")
+	                return result.slice(1);
+	            return result;
+	        };
+	        Store.prototype.fireChanged = function () {
+	            BugLog_1.bugLogGroup("%cCHANGE", "font-weight: normal; color: #b00");
+	            try {
+	                this._onChanged.trigger();
+	            }
+	            finally {
+	                BugLog_1.bugLogGroupEnd();
+	            }
+	        };
+	        return Store;
+	    }());
+	    exports.__esModule = true;
+	    exports["default"] = Store;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var EventSource = (function () {
+	        function EventSource() {
+	            var _this = this;
+	            this._listeners = [];
+	            /** Invokes all of the listeners for this event. */
+	            this.trigger = (function () {
+	                var a = [];
+	                for (var _i = 0; _i < arguments.length; _i++) {
+	                    a[_i - 0] = arguments[_i];
+	                }
+	                var result = undefined;
+	                var context = {};
+	                var listeners = _this._listeners.slice(0);
+	                var args = a || [];
+	                for (var i = 0; i < listeners.length; i++) {
+	                    var handler_result = listeners[i].apply(context, args);
+	                    result = result || handler_result;
+	                }
+	                return result;
+	            });
+	        }
+	        /** Registers a new listener for the event. */
+	        EventSource.prototype.add = function (listener) {
+	            var _this = this;
+	            this._listeners.push(listener);
+	            return function () { return _this.remove(listener); };
+	        };
+	        /** Unregisters a listener from the event.
+	            If no listener is provided, removes all listeners */
+	        EventSource.prototype.remove = function (listener) {
+	            if (typeof listener !== 'function') {
+	                this._listeners = [];
+	                return;
+	            }
+	            for (var i = 0; i < this._listeners.length; i++)
+	                if (this._listeners[i] === listener) {
+	                    this._listeners.splice(i, 1);
+	                    break;
+	                }
+	        };
+	        return EventSource;
+	    }());
+	    exports.__esModule = true;
+	    exports["default"] = EventSource;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -267,102 +349,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(6), __webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, jsx, BugLog_1) {
-	    // interface Document {
-	    //     registerElement(name: string, prototype: any): {new:() => HTMLElement};
-	    // }
-	    // 
-	    // export var defineComponent = (function() {
-	    //     class Component extends HTMLElement {
-	    //         shadowRoot;
-	    //         firstUpdate = false;
-	    //         
-	    //         createdCallback = function() {
-	    //             // Create a shadow root for the content of the component to render into
-	    //             this.shadowRoot = this.createShadowRoot();
-	    //             this.firstUpdate = true;
-	    //             this.props = null;
-	    // 
-	    //             // Handle lazy upgrade - take the existing props from the Element and
-	    //             // re-apply them so that they go through (and do not shadow) the setter.
-	    //             var props = this.props;
-	    //             if (props) {
-	    //                 delete this.props;
-	    //                 this.props = props;
-	    //             }
-	    //         };
-	    // 
-	    // 
-	    //         /**
-	    //          * Renders / diffs the contents of the component's shadow root using the
-	    //          * render function defined by the component's spec.
-	    //          */
-	    //         render = function() {
-	    //             jsx.patch(this.shadowRoot, this.render.bind(this));
-	    //         };
-	    // 
-	    //         willReceiveProps = function(newProps, oldProps) { };
-	    //         componentDidUpdate = function() { };
-	    //         shouldComponentUpdate = function(newProps, oldProps) {
-	    //             return true;
-	    //         };
-	    // 
-	    //         private _props: any;
-	    //         /**
-	    //          * Incremental DOM will update the 'props' property on the DOM node for our
-	    //          * component. This setter notifies us when the props have changed so that
-	    //          * we can check if an update is needed, and if so, call render. 
-	    //          * 
-	    //          */
-	    //         set props(newProps) {
-	    //             this.willReceiveProps(newProps, this.props);
-	    // 
-	    //             var shouldUpdate = this.firstUpdate ||
-	    //                 this.shouldComponentUpdate(newProps, this.props);
-	    // 
-	    //             this.firstUpdate = false;
-	    //             this._props = newProps;
-	    // 
-	    //             if (shouldUpdate) {
-	    //                 this.render();
-	    //                 this.componentDidUpdate();
-	    //             }
-	    //         }
-	    // 
-	    //         get props() {
-	    //             return this._props;
-	    //         }
-	    //     }
-	    // 
-	    //     /**
-	    //      * Define a component with a React-like lifecycle. Spec is an object
-	    //      * containing.
-	    //      * - render (required)
-	    //      * - shouldComponentUpdate
-	    //      * - willReceiveProps
-	    //      * - componentDidUpdate
-	    //      * - attachedCallback
-	    //      * - detachedCallback
-	    //      * 
-	    //      * The attachedCallback / detachedCallback are the native custom element
-	    //      * lifecycle callbacks, corresponding to componentWillMount and
-	    //      * componentWillUnmount in React.
-	    //      */
-	    //     function defineComponent(spec) {
-	    //         throw new Error();
-	    // //         var prototype = Object.create(Component.prototype);
-	    // // 
-	    // //         for (var name in spec) {
-	    // //             prototype[name] = spec[name];
-	    // //         }
-	    // // 
-	    // //         return document.registerElement(spec.tag, {
-	    // //             prototype: prototype
-	    // //         });
-	    //     };
-	    // 
-	    //     return defineComponent;
-	    // })();
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(6), __webpack_require__(2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, jsx, BugLog_1) {
+	    "use strict";
 	    var StoreComponent = (function (_super) {
 	        __extends(StoreComponent, _super);
 	        function StoreComponent(props) {
@@ -411,7 +399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.setState(this.getState());
 	        };
 	        return StoreComponent;
-	    })(jsx.Component);
+	    }(jsx.Component));
 	    exports.__esModule = true;
 	    exports["default"] = StoreComponent;
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -478,6 +466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/***/ function(module, exports, __webpack_require__) {
 
 		var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+		    "use strict";
 		    var Component = (function () {
 		        function Component(props) {
 		            this.props = props;
@@ -497,15 +486,15 @@ return /******/ (function(modules) { // webpackBootstrap
 		            this.state = state;
 		        };
 		        return Component;
-		    })();
+		    }());
 		    exports.Component = Component;
 		    var open_vnode;
 		    var next_vnode;
 		    var previous_vnode;
 		    function patch(element, fn) {
-		        var node = element["__mirror_view_node"];
+		        var node = element["__reactiv_view_node"];
 		        if (!node)
-		            element["__mirror_view_node"] = node = {
+		            element["__reactiv_view_node"] = node = {
 		                parent: null,
 		                tag: element.nodeName.toLowerCase(),
 		                node: element,
@@ -527,8 +516,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		    }
 		    exports.elementVoid = elementVoid;
 		    function text(value, formatters) {
-		        var node = elementOpen("#text", null, null);
-		        elementClose();
+		        var node = _elementOpen("#text", null, null);
 		        if (node.text !== value) {
 		            var formatted = node.text = value;
 		            for (var i = 1; i < arguments.length; i++) {
@@ -538,67 +526,75 @@ return /******/ (function(modules) { // webpackBootstrap
 		            }
 		            node.node.data = formatted;
 		        }
+		        elementClose();
 		    }
 		    exports.text = text;
 		    function elementOpen(tag, key, statics, n1, v1, n2, v2, n3, v3) {
+		        _elementOpen.apply(null, arguments);
+		    }
+		    exports.elementOpen = elementOpen;
+		    function sync_arg(node, name, value) {
+		        if (value === null || value === undefined)
+		            return false;
+		        var existing_value = open_vnode.attrs[name];
+		        switch (name) {
+		            case "style":
+		                if (open_vnode.component)
+		                    throw new Error("components don't have dom nodes, you cannot set styles directly on them");
+		                if (typeof value === "string") {
+		                    node.style.cssText = value;
+		                    break;
+		                }
+		                var style = node.style;
+		                var visited_style = {};
+		                for (var prop in value) {
+		                    var prop_value = value[prop];
+		                    visited_style[prop] = true;
+		                    if (!existing_value || existing_value[prop] !== prop_value) {
+		                        style[prop] = prop_value;
+		                        (open_vnode.attrs[name] = existing_value = existing_value || {})[prop] = prop_value;
+		                    }
+		                }
+		                for (var prop in existing_value)
+		                    if (!visited_style[prop]) {
+		                        delete existing_value[prop];
+		                        style[prop] = "";
+		                    }
+		                break;
+		            default:
+		                if (existing_value !== value)
+		                    open_vnode.attrs[name] = value;
+		                if (name === "className")
+		                    name = "class";
+		                if (["object", "function"].indexOf(typeof value) !== -1) {
+		                    if (name.slice(0, 2) === "on" && typeof value === "function")
+		                        (function (fn) {
+		                            var event_name = name.slice(2).toLowerCase();
+		                            if (existing_value !== fn)
+		                                open_vnode.node.removeEventListener(event_name, existing_value);
+		                            open_vnode.node.addEventListener(event_name, fn);
+		                        })(value);
+		                }
+		                else if (!open_vnode.component)
+		                    node.setAttribute(name, value);
+		                break;
+		        }
+		        return true;
+		    }
+		    ;
+		    function _elementOpen(tag, key, statics, n1, v1, n2, v2, n3, v3) {
 		        sync.apply(null, arguments);
 		        //    if (open_vnode.component)
 		        //        return open_vnode;
 		        var visited = {};
 		        var node = open_vnode.node;
-		        var sync_arg = function (name, value) {
-		            if (value === null || value === undefined)
-		                return;
-		            visited[name] = true;
-		            var existing_value = open_vnode.attrs[name];
-		            switch (name) {
-		                case "style":
-		                    if (open_vnode.component)
-		                        throw new Error("components don't have dom nodes, you cannot set styles directly on them");
-		                    if (typeof value === 'string') {
-		                        node.style.cssText = value;
-		                        break;
-		                    }
-		                    var style = node.style;
-		                    var visited_style = {};
-		                    for (var prop in value) {
-		                        var prop_value = value[prop];
-		                        visited_style[prop] = true;
-		                        if (!existing_value || existing_value[prop] !== prop_value) {
-		                            style[prop] = prop_value;
-		                            (open_vnode.attrs[name] = existing_value = existing_value || {})[prop] = prop_value;
-		                        }
-		                    }
-		                    for (var prop in existing_value)
-		                        if (!visited_style[prop]) {
-		                            delete existing_value[prop];
-		                            style[prop] = '';
-		                        }
-		                    break;
-		                default:
-		                    if (existing_value !== value)
-		                        open_vnode.attrs[name] = value;
-		                    if (name == "className")
-		                        name = "class";
-		                    if (['object', 'function'].indexOf(typeof value) !== -1) {
-		                        if (name.slice(0, 2) === "on" && typeof value === "function")
-		                            (function (fn) {
-		                                var event_name = name.slice(2).toLowerCase();
-		                                if (existing_value !== fn)
-		                                    open_vnode.node.removeEventListener(event_name, existing_value);
-		                                open_vnode.node.addEventListener(event_name, fn);
-		                            })(value);
-		                    }
-		                    else if (!open_vnode.component)
-		                        node.setAttribute(name, value);
-		                    break;
-		            }
-		        };
 		        if (statics)
 		            for (var i = 0; i < statics.length; i += 2)
-		                sync_arg(statics[i], statics[i + 1]);
+		                if (sync_arg(node, statics[i], statics[i + 1]))
+		                    visited[statics[i]] = true;
 		        for (var i = 3; i < arguments.length; i += 2)
-		            sync_arg(arguments[i], arguments[i + 1]);
+		            if (sync_arg(node, arguments[i], arguments[i + 1]))
+		                visited[arguments[i]] = true;
 		        for (var name_1 in open_vnode.attrs)
 		            if (!visited[name_1]) {
 		                if (name_1.slice(0, 2) === "on" && typeof open_vnode.attrs[name_1] === "function")
@@ -609,7 +605,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		            }
 		        return open_vnode;
 		    }
-		    exports.elementOpen = elementOpen;
 		    function elementClose() {
 		        if (open_vnode) {
 		            var kids = open_vnode.kids;
@@ -696,7 +691,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		                }
 		                else {
 		                    var doc = open_vnode && open_vnode.node ? open_vnode.node.ownerDocument : document;
-		                    next_vnode = { parent: open_vnode, node: tag === "#text" ? doc.createTextNode('') : doc.createElement(tag), tag: tag.toLowerCase(), key: key, attrs: {}, kids: [] };
+		                    next_vnode = { parent: open_vnode, node: tag === "#text" ? doc.createTextNode("") : doc.createElement(tag), tag: tag.toLowerCase(), key: key, attrs: {}, kids: [] };
 		                }
 		            if (open_vnode) {
 		                kids.splice(replacing_child ? kids.indexOf(replacing_child) : kids.length, 0, next_vnode);
@@ -713,7 +708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		                if (!previous_vnode)
 		                    throw new Error("component didn't call any elements");
 		                open_vnode.node = previous_vnode.node;
-		                open_vnode.node["__mirror_view_node"] = open_vnode;
+		                open_vnode.node["__reactiv_view_node"] = open_vnode;
 		            }
 		            if (parent_node && open_vnode.node) {
 		                if (key)

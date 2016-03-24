@@ -1,4 +1,4 @@
-﻿interface IEventSource<T extends Function> {
+﻿export interface IEventSource<T extends Function> {
     add(listener: T): () => void;
     remove(listener: T):void;
     trigger: T;

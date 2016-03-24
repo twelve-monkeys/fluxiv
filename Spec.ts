@@ -1,6 +1,6 @@
-import * as jsx from "../../reactiv";
+import * as jsx from './node_modules/reactiv/lib/reactiv';
 
-interface messageProps {
+export interface messageProps {
     importance: number;
     message: string;
 }
@@ -14,12 +14,12 @@ export class message extends jsx.Component<messageProps, void> {
     }
 }
 
-interface importantProps {
+export interface importantProps {
     importance: number;
     name: string;
 }
 
-interface importantState {
+export interface importantState {
     tired: boolean;
 }
 
@@ -507,7 +507,7 @@ describe("a patch", () => {
         expect(node.outerHTML).toBe('<div><div style="display: inline; color: red;">ok</div></div>');
     });
 
-    fit("is fast", () => {
+    it("is fast", () => {
         var start = new Date().getTime();
 
         const iterations = 10000;

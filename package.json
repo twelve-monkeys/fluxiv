@@ -17,13 +17,22 @@
     "virtual",
     "dom"
   ],
-  "author": "aesclepius",
+  "author": "jeremy kothe",
   "license": "ISC",
+  "dependencies": {
+    "reactiv":"^0.3.5"
+  },
   "devDependencies": {
-    "reactiv":"^0.3.0",
-    "awesome-typescript-loader": "^0.15.9",
     "jasmine": "^2.4.1",
-    "typescript": "^1.7.5",
-    "webpack": "^1.12.11"
+    "awesome-typescript-loader": "^0.15.9",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.8",
+    "karma-junit-reporter": "^0.4.1",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.5",
+    "typescript": "^1.8.5",
+    "webpack": "^1.12.14"
   }
 }

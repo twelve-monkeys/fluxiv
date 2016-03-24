@@ -2,7 +2,7 @@ var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 module.exports = {
     resolve: {
-        extensions: ['', '.ts']
+        extensions: ['', '.ts', '.js']
     },
     target: "web",
     output: {

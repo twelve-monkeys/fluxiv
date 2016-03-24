@@ -2,10 +2,12 @@
     "compilerOptions": {
         "target":"es3",
         "jsx": "preserve",
-        "module": "amd"
+        "module": "amd",
+        "declaration": true
     },
     "exclude": [
         "node_modules",
-        "spec"
+        "test",
+        "lib"
     ]
 }
