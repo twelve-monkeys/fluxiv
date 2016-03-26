@@ -2,12 +2,14 @@
     "compilerOptions": {
         "target":"es3",
         "jsx": "preserve",
-        "module": "amd",
-        "declaration": true
+        "module": "commonjs",
+        "declaration": true,
+        "outDir": "lib"
     },
     "exclude": [
         "node_modules",
         "test",
-        "lib"
+        "lib",
+        "bower_components"
     ]
 }

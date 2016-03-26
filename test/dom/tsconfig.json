@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "target":"es3",
+        "jsx": "preserve"
+    },
+    "exclude": [
+    ]
+}

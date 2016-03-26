@@ -1,4 +1,5 @@
 var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+var path = require('path');
 
 module.exports = {
     resolve: {
@@ -6,9 +7,9 @@ module.exports = {
     },
     target: "web",
     output: {
-        path: __dirname,
-        filename: "index.js",
-        library: 'shared-components',
+        path: path.join(__dirname, "lib"),
+        filename: "fluxiv.js",
+        library: '',
         libraryTarget: 'umd'
     },
     entry: "./fluxiv.ts",

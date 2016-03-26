@@ -1,4 +1,6 @@
-import * as jsx from './node_modules/reactiv/lib/reactiv';
+/// <reference path="../../typings/tsd.d.ts" />
+
+import * as jsx from 'reactiv';
 
 export interface messageProps {
     importance: number;

@@ -1,4 +1,6 @@
-import * as jsx from './node_modules/reactiv/lib/reactiv';
+/// <reference path="./typings/tsd.d.ts" />
+
+import * as jsx from 'reactiv';
 
 import Store from "./Store";
 import {bugLogGroup, bugLog, bugLogGroupEnd} from "./BugLog";

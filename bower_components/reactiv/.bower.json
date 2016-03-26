@@ -1,0 +1,39 @@
+{
+  "name": "reactiv",
+  "description": "A react-like incremental vdom renderer",
+  "main": "./lib/reactiv.js",
+  "typescript": {
+    "definition": "lib/reactiv.d.ts"
+  },
+  "authors": [
+    "jeremy kothe"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "react",
+    "jsx",
+    "incremental",
+    "virtual",
+    "dom"
+  ],
+  "homepage": "https://github.com/twelve-monkeys/reactiv",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "e32808d153",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e32808d153d7faa6a33602dd60ed55203cb60edb"
+  },
+  "_source": "git://github.com/twelve-monkeys/reactiv.git",
+  "_target": "*",
+  "_originalSource": "git://github.com/twelve-monkeys/reactiv.git"
+}

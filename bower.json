@@ -1,0 +1,31 @@
+{
+  "name": "fluxiv",
+  "description": "A flux implementation for reactiv",
+  "main": "./lib/fluxiv.js",
+  "authors": [
+    "jeremy kothe"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "react",
+    "jsx",
+    "incremental",
+    "virtual",
+    "dom",
+    "flux"
+  ],
+  "homepage": "https://github.com/twelve-monkeys/fluxiv",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "reactiv": "git://github.com/twelve-monkeys/reactiv.git"
+  }
+}

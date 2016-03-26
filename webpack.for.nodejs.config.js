@@ -3,26 +3,22 @@ var path = require('path');
 
 module.exports = {
     resolve: {
-        extensions: ['', '.ts', '.tsx', '.js']
+        extensions: ['', '.ts', '.js']
     },
-
-    devtool: 'inline-source-map',
-
+    target: "web",
     output: {
-        path: __dirname,
-        filename: "[name].js"
+        path: path.join(__dirname, "lib"),
+        filename: "fluxiv-nodejs.js",
+        library: '',
+        libraryTarget: 'commonjs'
     },
-
-    entry: {
-        test: "./Spec"
-    },
-
+    entry: "./fluxiv.ts",
     module: {
         loaders: [
             {
                 test: /\.ts$/,
                 loader: 'awesome-typescript-loader'
-            }
+            },
         ]
     },
     plugins: [
