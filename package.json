@@ -2,7 +2,7 @@
   "name": "fluxiv",
   "version": "0.2.2",
   "description": "A flux implementation for reactiv",
-  "main": "dist/fluxiv-nodejs.js",
+  "main": "lib/fluxiv-nodejs.js",
   "scripts": {
     "clean": "rm -r -f lib && rm -r -f test/lib",
     "lint": "tslint fluxiv.ts",
