@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -r -f lib && rm -r -f test/lib",
     "lint": "tslint fluxiv.ts",
-    "typings": "tsc -p tsconfig.for.definitions.json && node ./node_modules/dts-bundle/lib/dts-bundle.js --name fluxiv --main lib/fluxiv.d.ts",
+    "typings": "tsc -p tsconfig.for.definitions.json",
     "build": "npm run clean && npm run typings && npm run build-for-browser && npm run build-for-nodejs",
     "build-for-browser": "webpack --config webpack.for.browser.config.js",
     "build-for-nodejs": "webpack --config webpack.for.nodejs.config.js",
