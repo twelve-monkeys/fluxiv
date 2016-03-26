@@ -10,6 +10,6 @@
         "node_modules",
         "test",
         "lib",
-        "bower_components"
+        "typings"
     ]
 }

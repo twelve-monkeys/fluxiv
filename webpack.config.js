@@ -8,11 +8,11 @@ module.exports = {
     target: "web",
     output: {
         path: path.join(__dirname, "lib"),
-        filename: "fluxiv-nodejs.js",
+        filename: "fluxiv.js",
         library: '',
         libraryTarget: 'commonjs'
     },
-    entry: "./fluxiv.ts",
+    entry: "./src/fluxiv.ts",
     module: {
         loaders: [
             {

@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git://github.com/twelve-monkeys/fluxiv.git"
   },
-  "main": "lib/fluxiv-nodejs.js",
+  "main": "lib/fluxiv.js",
   "scripts": {
     "clean": "rm -r -f lib && rm -r -f test/lib",
     "lint": "tslint fluxiv.ts",

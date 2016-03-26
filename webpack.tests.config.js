@@ -8,7 +8,7 @@ module.exports = {
 
     output: {
         path: path.join(__dirname, "test/lib"),
-        filename: "tests-nodejs.js"
+        filename: "tests.js"
     },
 
     entry: {
