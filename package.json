@@ -1,6 +1,6 @@
 {
   "name": "fluxiv",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A flux implementation for reactiv",
   "main": "dist/fluxiv-nodejs.js",
   "scripts": {
@@ -46,6 +46,6 @@
     "webpack": "^1.12.14"
   },
   "peerDependencies": {
-      "reactiv":"^0.3.8"
+    "reactiv": "^0.3.8"
   }
 }
