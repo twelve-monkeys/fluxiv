@@ -1,6 +1,7 @@
 ﻿import Store from "./Store";
 import {Action} from "./action";
 import {bugLogGroup, bugLog, bugLogGroupEnd} from "./BugLog";
+import EventSource from "./EventSource";
 
 type DispatcherCall = {store: Store, callback:Function};
 
@@ -15,9 +16,14 @@ export class Dispatcher {
     private _callsWaiting: DispatcherCall[] = [];
     private _callsQueued: DispatcherCall[] = [];
 
+    onWillDispatch = new EventSource<(action: Action) => void>();
+    onDidDispatch = new EventSource<(action: Action) => void>();
+
     dispatch(action: Action) {
         bugLogGroup("%cACTION " + action.name + "%c %o", "font-weight: normal; color: #b00", "font-weight: normal", action);
         try {
+            this.onWillDispatch.trigger(action);
+            
             this._callsQueued = this._stores.slice()
                 .filter(s => typeof s[action.name] === "function")
                 .map(store => <DispatcherCall>{ store, callback: () => (<Function>store[action.name]).call(store, action)});
@@ -25,9 +31,7 @@ export class Dispatcher {
             this._storesCalled = [];
             
             while(this._callsQueued.length) {
-                var call = this._callsQueued[0];
-                this._callsQueued = this._callsQueued.slice(1); 
-
+                var call = this._callsQueued.shift();
                 try {
                     bugLogGroup("%cSTORE " + call.store.getClassName(), "font-weight: normal; color: #b22");
                     try {
@@ -43,9 +47,12 @@ export class Dispatcher {
                 this._storesCalled.push(call.store);
                 
                 for(var waiting of this._callsWaiting.filter(w => w.store === call.store))
-                    this._callsQueued.splice(0, 0, waiting);                   
+                    this._callsQueued.splice(0, 0, waiting);
+                                       
                 this._callsWaiting = this._callsWaiting.filter(w => w.store !== call.store);                                        
             }
+            
+            this.onDidDispatch.trigger(action);
         } finally {
             bugLogGroupEnd();
         }

@@ -8,7 +8,8 @@
   },
   "main": "lib/fluxiv.js",
   "scripts": {
-    "clean": "rm -r -f lib && rm -r -f test/lib",
+    "clean": "echo cleaning",
+    "clean2": "rm -r -f lib && rm -r -f test/lib",
     "lint": "tslint fluxiv.ts",
     "typings": "tsc -p tsconfig.for.definitions.json",
     "build": "npm run clean && npm run typings && webpack",
