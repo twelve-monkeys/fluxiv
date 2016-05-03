@@ -4,7 +4,7 @@
     trigger: T;
 }
 
-export default class EventSource<T extends Function> implements IEventSource<T> {
+export class EventSource<T extends Function> implements IEventSource<T> {
     private _listeners: T[] = [];
 
     /** Registers a new listener for the event. */

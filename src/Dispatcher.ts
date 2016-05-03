@@ -1,7 +1,7 @@
-﻿import Store from "./Store";
+﻿import {Store} from "./Store";
 import {Action} from "./action";
 import {bugLogGroup, bugLog, bugLogGroupEnd} from "./BugLog";
-import EventSource from "./EventSource";
+import {EventSource} from "./EventSource";
 
 type DispatcherCall = {store: Store, callback:Function};
 

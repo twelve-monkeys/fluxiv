@@ -2,7 +2,7 @@
 
 import * as jsx from 'reactiv';
 
-import Store from "./Store";
+import {Store} from "./Store";
 import {bugLogGroup, bugLog, bugLogGroupEnd} from "./BugLog";
 
 export default class StoreComponent<P, S> extends jsx.Component<P,S> {

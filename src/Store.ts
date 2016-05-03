@@ -1,7 +1,7 @@
-﻿import EventSource from "./EventSource";
+﻿import {EventSource} from "./EventSource";
 import {bugLogGroup, bugLog, bugLogGroupEnd} from "./BugLog";
 
-export default class Store {
+export class Store {
     private _onChanged = new EventSource<() => void>();
     
     subscribe(callback: ()=>void) : () => void {
