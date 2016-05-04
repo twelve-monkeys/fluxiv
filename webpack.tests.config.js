@@ -10,7 +10,7 @@ module.exports = {
         filename: "tests.js"
     },
     entry: {
-        test: "./src/tests/dom/Spec"
+        test: "./src/tests/Spec"
     },
     module: {
         loaders: [
