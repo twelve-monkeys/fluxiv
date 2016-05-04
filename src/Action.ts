@@ -1,4 +1,7 @@
-/** The base type for "actions"" to change "stores". Just has a name. If needed, override and add other data. */
+/** The base type for "actions"" to change "stores". 
+ * Has a name and an optional value. 
+ * Any arguments should be packaged into the value. */
 export interface Action {
     name: string;
+    value?:any;
 }

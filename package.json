@@ -12,8 +12,8 @@
     "clean": "echo cleaning",
     "clean2": "rm -r -f lib && rm -r -f test/lib",
     "lint": "tslint fluxiv.ts",
-    "typings": "tsc -p tsconfig.for.definitions.json",
-    "build": "npm run clean && npm run typings && webpack",
+    "build": "npm run clean && npm run build-tsd && webpack",
+    "build-tsd": "tsc -p tsconfig.for.definitions.json",
     "test": "npm run build && webpack --config webpack.tests.config.js && karma start --single-run",
     "test-watch-chrome": "npm run build && start webpack --watch --config webpack.tests.config.js && karma start --browsers Chrome",
     "test-require": "npm run build && npm install -g . && npm ls -g && cd test && node test-require.js && cd .. && npm remove -g .",
@@ -33,7 +33,6 @@
   "dependencies": {},
   "devDependencies": {
     "awesome-typescript-loader": "^0.15.9",
-    "dts-bundle": "^0.4.3",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
@@ -43,7 +42,7 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "phantomjs-prebuilt": "^2.1.5",
     "reactiv": "^0.3.13",
-    "typescript": "^1.8.5",
+    "typescript": "^1.8.10",
     "webpack": "^1.12.14"
   }
 }

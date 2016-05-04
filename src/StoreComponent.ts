@@ -1,11 +1,9 @@
-// <reference path="./typings/tsd.d.ts" />
-
 import * as jsx from 'reactiv';
 
 import {Store} from "./Store";
-import {bugLogGroup, bugLog, bugLogGroupEnd} from "./BugLog";
+import * as log from "./Log";
 
-export default class StoreComponent<P, S> extends jsx.Component<P,S> {
+export class StoreComponent<P, S> extends jsx.Component<P,S> {
     state: S;
     props: P;
 
@@ -58,7 +56,7 @@ export default class StoreComponent<P, S> extends jsx.Component<P,S> {
     storeComponentWillUnmount() { }
 
     onStoreChanged() {
-        bugLog("%cCOMPONENT " + this.getClassName(), "color: #0b0");
+        log.write("%cCOMPONENT " + this.getClassName(), "color: #0b0");
         this.setState(this.getState());
     }
 }

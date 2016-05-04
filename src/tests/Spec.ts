@@ -1,6 +1,6 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="jasmine.d.ts" />
 
-import * as jsx from 'reactiv';
+import * as reactiv from 'reactiv';
 
 export interface messageProps {
     importance: number;
@@ -8,11 +8,11 @@ export interface messageProps {
 }
 
 
-export class message extends jsx.Component<messageProps, void> {
+export class message extends reactiv.Component<messageProps, void> {
     render() {
-        jsx.elementOpen("div", null, null, "style", { display: "inline", color: this.props.importance > 5 ? "red" : "gray" });
-        jsx.text(this.props.message);
-        jsx.elementClose();
+        reactiv.elementOpen("div", null, null, "style", { display: "inline", color: this.props.importance > 5 ? "red" : "gray" });
+        reactiv.text(this.props.message);
+        reactiv.elementClose();
     }
 }
 
@@ -25,13 +25,13 @@ export interface importantState {
     tired: boolean;
 }
 
-export class important extends jsx.Component<importantProps, importantState> {
+export class important extends reactiv.Component<importantProps, importantState> {
     constructor(props: importantProps) {
         super(props);
         this.setState({ tired: false });
     }
     render() {
-        jsx.elementVoid(message as any, null, null, "importance", this.props.importance, "message", this.state.tired ? "tired" : "ok");
+        reactiv.elementVoid(message as any, null, null, "importance", this.props.importance, "message", this.state.tired ? "tired" : "ok");
     }
 }
 
@@ -92,7 +92,7 @@ export class lifecycle {
     render() {
         lc_methods.push("render");
         lc_render++;
-        jsx.elementVoid("div", null, null, "frozen", freeze_message ? "yes" : "no");
+        reactiv.elementVoid("div", null, null, "frozen", freeze_message ? "yes" : "no");
     }
 }
 
@@ -144,48 +144,48 @@ describe("a patch", () => {
     });
 
     it("does nothing if nothing is rendered", () => {
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(node.outerHTML).toBe("<div></div>");
 
         node.setAttribute("data-id", "3");
         node.innerHTML = "somestuff";
 
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(node.outerHTML).toBe('<div data-id="3">somestuff</div>');
     });
 
     it("can use elementVoid to insert a div", () => {
-        jsx.patch(node, () => {
-            jsx.elementVoid("div");
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div");
         });
         expect(node.outerHTML).toBe("<div><div></div></div>");
     });
 
 
     it("will remove something", () => {
-        jsx.patch(node, () => {
-            jsx.elementOpen("span", null, null);
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("span", null, null);
+            reactiv.elementClose();
         });
         expect(node.outerHTML).toBe("<div><span></span></div>");
 
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
 
         expect(node.outerHTML).toBe("<div></div>");
     });
 
 
     it("can replace and add things", () => {
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null);
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null);
+            reactiv.elementClose();
         });
 
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null);
-            jsx.elementClose();
-            jsx.elementOpen("div", null, null);
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null);
+            reactiv.elementClose();
+            reactiv.elementOpen("div", null, null);
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe("<div><div></div><div></div></div>");
@@ -193,9 +193,9 @@ describe("a patch", () => {
 
     it("doesn't re-add the same div", () => {
         var fn = () =>
-            jsx.patch(node, () => {
-                jsx.elementOpen("div", null, null);
-                jsx.elementClose();
+            reactiv.patch(node, () => {
+                reactiv.elementOpen("div", null, null);
+                reactiv.elementClose();
             });
 
         for (var i = 0; i < 3; i++) {
@@ -205,9 +205,9 @@ describe("a patch", () => {
     });
 
     it("handles attributes", () => {
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id', "style", { color: 'red' });
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id', "style", { color: 'red' });
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id" style="color: red;"></div></div>');
@@ -215,69 +215,69 @@ describe("a patch", () => {
 
     it("mutates attributes", () => {
         var style = { color: 'red' } as any;
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id', "style", style);
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id', "style", style);
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id" style="color: red;"></div></div>');
 
         style.color = "blue";
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id', "style", style);
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id', "style", style);
+            reactiv.elementClose();
         });
 
         style.backgroundColor = "red";
         delete style.color;
 
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id', "style", style);
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id', "style", style);
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id" style="background-color: red;"></div></div>');
     });
 
     it("adds attributes", () => {
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id');
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id');
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id"></div></div>');
 
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id', "name", "fred");
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id', "name", "fred");
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id" name="fred"></div></div>');
     });
 
     it("removes attributes", () => {
-        jsx.patch(node, () => {
-            jsx.elementOpen("div", null, null, 'id', 'the_id', "name", "fred");
-            jsx.elementClose();
+        reactiv.patch(node, () => {
+            reactiv.elementOpen("div", null, null, 'id', 'the_id', "name", "fred");
+            reactiv.elementClose();
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id" name="fred"></div></div>');
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, null, 'id', 'the_id');
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, null, 'id', 'the_id');
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id"></div></div>');
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, ['id', 'the_id', 'frodo', '121'], 'data-frame', 'anterior');
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, ['id', 'the_id', 'frodo', '121'], 'data-frame', 'anterior');
         });
 
         expect(node.outerHTML).toBe('<div><div id="the_id" frodo="121" data-frame="anterior"></div></div>');
     });
 
     it("deals with a component", () => {
-        jsx.patch(node, () => {
-            jsx.elementVoid(lifecycle as any);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid(lifecycle as any);
         });
 
         expect(node.outerHTML).toBe('<div><div frozen="no"></div></div>');
@@ -293,8 +293,8 @@ describe("a patch", () => {
                 event.preventDefault();
         }
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, ["onClick", test_click]);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, ["onClick", test_click]);
         });
 
         expect(node.outerHTML).toBe('<div><div></div></div>');
@@ -308,8 +308,8 @@ describe("a patch", () => {
         expect(cancelled).toBe(true);
         expect(count).toBe(2);
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, ["onClick", test_click]);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, ["onClick", test_click]);
         });
 
         prevent_click_default = false;
@@ -328,8 +328,8 @@ describe("a patch", () => {
                 event.preventDefault();
         }
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, ["onClick", test_click]);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, ["onClick", test_click]);
         });
 
         expect(node.outerHTML).toBe('<div><div></div></div>');
@@ -343,8 +343,8 @@ describe("a patch", () => {
         expect(cancelled).toBe(true);
         expect(count).toBe(2);
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, null);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, null);
         });
 
         var cancelled = !simulateClick(node.children[0]);
@@ -364,8 +364,8 @@ describe("a patch", () => {
             event.preventDefault();
         }
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, ["onClick", test_click]);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, ["onClick", test_click]);
         });
 
         expect(node.outerHTML).toBe('<div><div></div></div>');
@@ -373,8 +373,8 @@ describe("a patch", () => {
         expect(cancelled).toBe(false);
         expect(count).toBe(1);
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, ["onClick", test_click2]);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, ["onClick", test_click2]);
         });
 
         var cancelled = !simulateClick(node.children[0]);
@@ -383,104 +383,104 @@ describe("a patch", () => {
     });
 
     it("allows elements to mutate themselves", () => {
-        jsx.patch(node, () => jsx.elementVoid("div"));
+        reactiv.patch(node, () => reactiv.elementVoid("div"));
         (node.children[0] as HTMLElement).innerHTML = "dynamic";
-        jsx.patch(node, () => jsx.elementVoid("div"));
+        reactiv.patch(node, () => reactiv.elementVoid("div"));
         expect(node.outerHTML).toBe('<div><div>dynamic</div></div>');
     });
 
     it("constructs components appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_constructor).toBe(1);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_constructor).toBe(1);
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(lc_constructor).toBe(1);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_constructor).toBe(2);
     });
 
     it("calls componentWillMount appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentWillMount).toBe(1);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentWillMount).toBe(1);
     });
 
     it("calls componentDidMount appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentDidMount).toBe(1);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentDidMount).toBe(1);
     });
 
     it("calls componentWillUnmount appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentWillUnmount).toBe(0);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentWillUnmount).toBe(0);
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(lc_componentWillUnmount).toBe(1);
     });
 
     it("calls componentWillUpdate appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentWillUpdate).toBe(0);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentWillUpdate).toBe(1);
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(lc_componentWillUpdate).toBe(1);
     });
 
     it("calls componentDidUpdate appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentDidUpdate).toBe(0);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_componentDidUpdate).toBe(1);
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(lc_componentDidUpdate).toBe(1);
     });
 
     it("calls shouldComponentUpdate appropriately", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_shouldComponentUpdate).toBe(0);
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_shouldComponentUpdate).toBe(1);
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(lc_shouldComponentUpdate).toBe(1);
     });
 
     it("calls mounting lifecycle methods in the correct order", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_methods.join(" => ")).toBe("constructor => componentWillMount => render => componentDidMount");
     });
 
     it("calls re-render lifecycle methods in the correct order", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         lc_methods = [];
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_methods.join(" => ")).toBe("componentWillReceiveProps => shouldComponentUpdate => componentWillUpdate => render => componentDidUpdate");
     });
 
     it("respects shouldComponentUpdate", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         lc_methods = [];
         freeze_message = true;
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         expect(lc_methods.join(" => ")).toBe("componentWillReceiveProps => shouldComponentUpdate");
         expect(node.outerHTML).toBe('<div><div frozen="no"></div></div>');
     });
 
     it("calls unmounting lifecycle methods in the correct order", () => {
-        jsx.patch(node, () => jsx.elementVoid(lifecycle as any));
+        reactiv.patch(node, () => reactiv.elementVoid(lifecycle as any));
         lc_methods = [];
-        jsx.patch(node, () => null);
+        reactiv.patch(node, () => null);
         expect(lc_methods.join(" => ")).toBe("componentWillUnmount");
     });
 
     it("unmounts components", () => {
-        jsx.patch(node, () => {
-            jsx.elementVoid(lifecycle as any, null, null, null);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid(lifecycle as any, null, null, null);
         });
 
         expect(node.outerHTML).toBe('<div><div frozen="no"></div></div>');
@@ -488,8 +488,8 @@ describe("a patch", () => {
         expect(lc_componentWillMount).toBe(1);
         expect(lc_componentDidMount).toBe(1);
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", null, null, null);
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", null, null, null);
         });
 
         expect(node.outerHTML).toBe('<div><div></div></div>');
@@ -502,8 +502,8 @@ describe("a patch", () => {
     it("recognises nested components", () => {
         var start = new Date().getTime();
 
-        jsx.patch(node, () => {
-            jsx.elementVoid(important as any, null, null, "importance", 7, "name", "bond, jimmy-bob melon-field bond");
+        reactiv.patch(node, () => {
+            reactiv.elementVoid(important as any, null, null, "importance", 7, "name", "bond, jimmy-bob melon-field bond");
         });
 
         expect(node.outerHTML).toBe('<div><div style="display: inline; color: red;">ok</div></div>');
@@ -514,8 +514,8 @@ describe("a patch", () => {
 
         const iterations = 10000;
         for (var i = 0; i < iterations; i++) {
-            jsx.patch(node, () => {
-                jsx.elementVoid(important as any, null, null, "importance", i % 10, "name", "bond, jimmy-bob " + (i % 2 ? "melon-field" : "princess") + " bond");
+            reactiv.patch(node, () => {
+                reactiv.elementVoid(important as any, null, null, "importance", i % 10, "name", "bond, jimmy-bob " + (i % 2 ? "melon-field" : "princess") + " bond");
             });
         }
 
@@ -526,14 +526,14 @@ describe("a patch", () => {
     });
 
     it("deals with keys", () => {
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", "1", null, "id", "iamme");
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", "1", null, "id", "iamme");
         });
 
         expect(node.outerHTML).toBe('<div><div id="iamme"></div></div>');
 
-        jsx.patch(node, () => {
-            jsx.elementVoid("div", "1", null, "id", "iamstillme");
+        reactiv.patch(node, () => {
+            reactiv.elementVoid("div", "1", null, "id", "iamstillme");
         });
 
         expect(node.outerHTML).toBe('<div><div id="iamstillme"></div></div>');

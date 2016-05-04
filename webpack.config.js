@@ -5,7 +5,6 @@ module.exports = {
     resolve: {
         extensions: ['', '.ts', '.js']
     },
-    target: "web",
     output: {
         path: path.join(__dirname, "lib"),
         filename: "fluxiv.js",
@@ -23,5 +22,6 @@ module.exports = {
     },
     plugins: [
         new ForkCheckerPlugin()
-    ]
+    ],
+    target: "web"
 };

@@ -5,16 +5,13 @@ module.exports = {
     resolve: {
         extensions: ['', '.ts', '.tsx', '.js']
     },
-
     output: {
-        path: path.join(__dirname, "test/lib"),
+        path: path.join(__dirname, "lib"),
         filename: "tests.js"
     },
-
     entry: {
-        test: "./test/dom/Spec"
+        test: "./src/tests/dom/Spec"
     },
-
     module: {
         loaders: [
             {
