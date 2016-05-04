@@ -14,8 +14,6 @@ function _log(fn: (message: string, ...parameters: any[]) => void, message: stri
 /** Add a message to the end of the log that is sent up with bug reports,
  * and log it to the console.  This signature matches that of console.log: */
 export function write(message?: any, ...parameters: any[]) {
-    if (console)
-        _log(console.log, message, parameters);
     save(message, parameters);
 };
 
@@ -91,6 +89,9 @@ function save(message?: any, ...parameters: any[]) {
     for (i = 0; i < groups.length; i++)
         full_message += "  ";
     full_message += message;
+
+    if (console)
+        _log(console.log, full_message, []);
 
     messages.push(full_message);
     if (messages.length > 1024)
